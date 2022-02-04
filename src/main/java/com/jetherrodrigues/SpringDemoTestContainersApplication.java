@@ -3,6 +3,7 @@ package com.jetherrodrigues;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +13,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @SpringBootApplication
 public class SpringDemoTestContainersApplication {
@@ -83,7 +86,52 @@ class CustomerController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Customer> getById(@PathVariable("id") final long id) {
 		final Customer customer = customerRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Customer not found for [ " + id + " ]"));
+				.orElseThrow(() -> new NotFoundException("Customer not found for [ " + id + " ]"));
 		return ResponseEntity.ok().body(customer);
+	}
+}
+
+@RestControllerAdvice
+class RestExceptionHandler {
+	@ExceptionHandler(NotFoundException.class)
+	ResponseEntity<ErrorResponse> handleNotFoundException(final NotFoundException ex) {
+		final ErrorResponse error = new ErrorResponse("NOT_FOUND", ex.getMessage(), HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+	}
+}
+
+final class ErrorResponse {
+	private final String error;
+	private final String message;
+	private final int status;
+	private final long timestamp;
+
+	ErrorResponse(final String error, final String message, final int status) {
+		this.error = error;
+		this.message = message;
+		this.status = status;
+		this.timestamp = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli();
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public long getTimestamp() {
+		return timestamp;
+	}
+}
+
+class NotFoundException extends RuntimeException {
+	NotFoundException(final String message) {
+		super(message);
 	}
 }
