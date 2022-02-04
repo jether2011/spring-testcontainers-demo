@@ -11,7 +11,12 @@ For further reference, please consider the following sections:
 * [Testcontainers](https://www.testcontainers.org/)
 
 ### Guides
-The following guides illustrate how to use some features concretely:
+Live about the test container topic:
 
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+* [Testcontainers Live! with Josh Long: from 0 to local development with Spring and Testcontainers](https://www.youtube.com/watch?v=1PUshxvTbAc)
 
+### Thanks to
+- Josh Long `@starbuxman`
+- Oleg Šelajev `@shelajev`
+  
+  
