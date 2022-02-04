@@ -10,8 +10,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Testcontainers
@@ -32,10 +31,14 @@ class CustomerRepositoryTest {
 	@Test
 	@DisplayName("Should load postgres, insert customer and assert that insert successfully")
 	void shouldInsertCustomerSuccessfully() {
+		final String customerName = "Jether Rodrigues";
+
 		assertFalse(customerRepository.findAll().iterator().hasNext(), "Must be no data!");
 
-		customerRepository.save(new Customer("Jether Rodrigues"));
+		final Customer customer = customerRepository.save(new Customer(customerName));
 
 		assertTrue(customerRepository.findAll().iterator().hasNext(), "Must be some data!");
+		assertNotNull(customer.getId());
+		assertEquals(customer.getName(), customerName);
 	}
 }
