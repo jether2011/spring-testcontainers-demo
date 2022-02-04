@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CustomerRepositoryTest extends DatabaseConfigTest{
+class CustomerRepositoryTest extends DatabaseConfigTest {
 	@Autowired
 	private CustomerRepository customerRepository;
 

@@ -115,7 +115,7 @@ class CustomerControllerTest extends DatabaseConfigTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(readOnly = true)
     @DisplayName("Should return not found when try to get customer by id")
     void shouldReturnNotFoundWhenTryToGetCustomerById() throws Exception {
         final long fakeId = 999;
